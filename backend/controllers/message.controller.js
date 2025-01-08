@@ -1,5 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
   try {
@@ -27,9 +28,6 @@ export const sendMessage = async (req, res) => {
       conversation.messages.push(newMessage._id);
     }
 
-
-    //SOCKET IO FUNCTIONALITY WILL BE IMPLEMENTED TO MAKE IT REAL TIME
-
     //takes much time 2s
     // await conversation.save();  1s
     // await newMessage.save();    1s
@@ -37,34 +35,36 @@ export const sendMessage = async (req, res) => {
     //
     await Promise.all([conversation.save(), newMessage.save()]); //1s
 
+    //SOCKET IO FUNCTIONALITY WILL BE IMPLEMENTED TO MAKE IT REAL TIME
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      //io.to(<socket_id).emit() is used to send events to specific client
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
+    
     res.status(201).json(newMessage);
-
-
   } catch (error) {
     console.log("Error in sendMessage controller: ", error.message);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
+export const getMessages = async (req, res) => {
+  try {
+    const { id: userToChatId } = req.params;
+    const senderId = req.user._id;
 
-export const getMessages = async(req, res) => {
-    try {
-        
-        const {id:userToChatId}= req.params;
-        const senderId = req.user._id;
+    const conversation = await Conversation.findOne({
+      participants: { $all: [senderId, userToChatId] },
+    }).populate("messages"); //NOT ACTUAL MESSAGES BUT ACTUAL MESSAGE
 
-        const conversation =await Conversation.findOne({
-            participants: {$all: [senderId, userToChatId]}
-        }).populate("messages"); //NOT ACTUAL MESSAGES BUT ACTUAL MESSAGE   
+    if (!conversation) return res.status(200).json([]);
 
+    const messages = conversation.messages;
 
-        if(!conversation) return res.status(200).json([]);
-
-        const messages  = conversation.messages;
-
-        res.status(200).json(messages);
-    } catch (error) {
-        console.log("Error in sendMessage controller: ", error.message);
-        res.status(500).json({ error: "Internal Server Error" });
-    }
-}
+    res.status(200).json(messages);
+  } catch (error) {
+    console.log("Error in sendMessage controller: ", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
