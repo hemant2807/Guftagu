@@ -1,20 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Messages from "./Messages.jsx";
 import MessageInput from "./MessageInput.jsx";
 import { TiMessages } from "react-icons/ti";
+import useConversation from "../../store/useConversation.js";
 
 const MessageContainer = () => {
-  const noChatSelected = true;
+  const { selectedConversation, setSelectedConversation } = useConversation();
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape" && selectedConversation) {
+        setSelectedConversation(null);
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedConversation, setSelectedConversation]);
+
   return (
     <div className="md:min-w-[450px] flex flex-col ">
-      {noChatSelected ? (
+      {!selectedConversation ? (
         <NoChatSelected />
       ) : (
         <>
           {/* Header */}
           <div className="bg-slate-500 px-4 py-2 mb-2 flex items-center">
             <span className="label-text mr-2">To:</span>{" "}
-            <span className="text-gray-900 font-bold"> Hemant Kumar</span>
+            <span className="text-gray-900 font-semibold">
+              {selectedConversation.fullName}
+            </span>
           </div>
 
           <Messages />
@@ -38,7 +54,6 @@ const NoChatSelected = () => {
 };
 
 export default MessageContainer;
-
 
 //CODE SNIPPET
 // import React from "react";
@@ -81,4 +96,3 @@ export default MessageContainer;
 // };
 
 // export default MessageContainer;
-

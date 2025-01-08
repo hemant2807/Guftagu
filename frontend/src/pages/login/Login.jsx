@@ -1,14 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import useLogin from "../../hooks/useLogin";
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { loading, login } = useLogin();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await login(username, password);
+  };
+
   return (
     <div className="flex flex-col items-center justfy-center min-w-96 mx-auto">
-      <div className="h-full w-full p-6 bg-gray-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20">
+      <div className="h-full w-full p-6 bg-gray-900 rounded-md bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30">
         <h1 className="text-3xl font-semibold text-center text-gray-300">
           Login
           <span className="text-sky-500"> Guftagu</span>
         </h1>
-        <form className="mt-4 w-full max-w-md mx-auto p-4">
+
+        <form
+          className="mt-4 w-full max-w-md mx-auto p-4"
+          onSubmit={handleSubmit}
+        >
           <div>
             <label className="input input-bordered flex items-center gap-2 h-12">
               <svg
@@ -19,11 +35,17 @@ const Login = () => {
               >
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
               </svg>
-              <input type="text" className="grow" placeholder="Username" />
+              <input
+                type="text"
+                className="grow"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </label>
           </div>
           <div className="mt-4">
-          <label className="input input-bordered flex items-center gap-2 h-12">
+            <label className="input input-bordered flex items-center gap-2 h-12">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
@@ -40,18 +62,24 @@ const Login = () => {
                 type="password"
                 placeholder="Password"
                 className="grow"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </label>
           </div>
           <div className="flex flex-col items-center">
-            <button className="btn btn-md mt-6 h-12 w-full">
-              Login
+            <button className="btn btn-md mt-6 h-12 w-full" disabled={loading}>
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Login"
+              )}
             </button>
             <p className="text-sm mt-4">
               <span className="text-white">{"Don't"} have an account? </span>
-              <a href="#" className="text-blue-500 hover:underline">
+              <Link to="/signup" className="text-blue-500 hover:underline">
                 Signup
-              </a>
+              </Link>
             </p>
           </div>
         </form>
@@ -60,9 +88,7 @@ const Login = () => {
   );
 };
 
-
 export default Login;
-
 
 //STARTER CODE FOR THE PAGE
 {

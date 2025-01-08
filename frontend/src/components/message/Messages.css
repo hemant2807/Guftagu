@@ -1,0 +1,11 @@
+.chat-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .messages-container {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
