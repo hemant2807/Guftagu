@@ -32,7 +32,7 @@ Guftagu is a full-stack real-time messaging application designed to provide seam
 - **Frontend**: React.js, CSS, Zustand (state management)
 - **Backend**: Node.js, Express.js, Socket.IO
 - **Database**: MongoDB
-- **Deployment**: Hosted on Render.com ([View Live Project](https://guftagu-rjks.onrender.com/login))
+- **Deployment**: Hosted on Render ([View Live Project](https://guftagu-rjks.onrender.com/login))
 
 ---
 
@@ -89,7 +89,6 @@ Guftagu is a full-stack real-time messaging application designed to provide seam
    ```bash
    http://localhost:3000
 
-
 ### 🚀 Deployment Steps
 1. Deploy the backend to Render.com.
 
@@ -129,9 +128,15 @@ Guftagu is a full-stack real-time messaging application designed to provide seam
 ![Online Users Chat Conversation Interface](frontend/public/Screenshots/bothUserOnlineConvo_interface.png)
 
 ### 📜 License
-This project is licensed under the [LICENSE.md](LICENSE.md) file. See the LICENSE.md file for details.
+This project is licensed under the [LICENSE.md](LICENSE.md) file. See the LICENSE file for details.
 
+## 📞 Contact
+For questions or collaboration, feel free to reach out:
 
+- **Email**: [hemant.k2807@gmail.com](mailto:hemant.k2807@gmail.com)
+- **GitHub**: [https://github.com/hemant2807](https://github.com/hemant2807)
+
+Enjoy Guftagu! 🚀
 
 
 
