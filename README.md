@@ -59,7 +59,7 @@ Guftagu is a full-stack real-time messaging application designed to provide seam
 
 2. Navigate to the project directory:
    ```bash
-   cd ChatApp
+   cd Guftagu
 
 3. Install dependencies for both frontend and backend:
    ```bash
